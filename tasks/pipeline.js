@@ -70,9 +70,10 @@ var jsFilesToInject = [
   'dependencies/**/*.js',
 
   // All of the rest of your custom client-side js files will be injected here,
+  // EXCEPT for filenames that start with _,
   // in no particular order.  To customize the ordering, add additional items
   // here, _above_ this one.
-  'js/**/*.js'
+  'js/**/[!_]*.js'
 ];
 
 

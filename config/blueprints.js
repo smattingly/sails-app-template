@@ -17,7 +17,7 @@ module.exports.blueprints = {
   *                                                                          *
   ***************************************************************************/
 
-  // actions: false,
+  actions: true,
 
 
   /***************************************************************************
@@ -38,4 +38,5 @@ module.exports.blueprints = {
 
   // shortcuts: true,
 
+  prefix: '/api/v1',
 };
