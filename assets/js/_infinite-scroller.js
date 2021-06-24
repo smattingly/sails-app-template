@@ -1,21 +1,3 @@
-async function restDelete(url) {
-    console.log(`deleting ${url}`)
-    const fetchOptions = {
-        method: "DELETE",
-    };
-
-    const response = await fetch(url, fetchOptions);
-
-    if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error(errorMessage);
-        showBanner(`Error. <code>${errorMessage}</code>`, 'danger');
-        return;
-    }
-
-    showBanner(`Success. ${url} was deleted.`, 'success');
-}
-
 function deleteRow(id) {
     const row = document.getElementById(id);
     if (row) row.remove();
@@ -57,8 +39,7 @@ async function infiniteScroll(apiPrefix, modelUrl, fields) {
 
     const fetchData = async (skip, limit) => {
         setTimeout(async () => {
-            try {
-                
+            try {              
                 const response = await fetch(`${apiPrefix}${modelUrl}?skip=${skip}&limit=${limit}`, {});
 
                 if (!response.ok) {
@@ -89,9 +70,7 @@ async function infiniteScroll(apiPrefix, modelUrl, fields) {
             scroller.removeEventListener("scroll", onScroll);
             skip += limit;
             await fetchData(skip, limit);
-            if (moreToFetch) {
-                setTimeout(activateScrollHandler, 100);
-            }
+            if (moreToFetch) setTimeout(activateScrollHandler, 100);
         }
     };
 

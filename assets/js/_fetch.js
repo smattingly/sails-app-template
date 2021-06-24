@@ -1,9 +1,9 @@
-async function postFormDataAsJson(method, url, formData) {
+async function submitFormDataAsJson(method, url, formData) {
 	const plainFormData = Object.fromEntries(formData.entries());
 	const formDataJsonString = JSON.stringify(plainFormData);
-console.log(`fetch ${method} ${url}`)
+
 	const fetchOptions = {
-		method: method, 
+		method: method,
 		headers: {
 			"Content-Type": "application/json",
 			Accept: "application/json",
@@ -21,13 +21,6 @@ console.log(`fetch ${method} ${url}`)
 	return response.json();
 }
 
-/**
- * Event handler for a form submit event.
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event
- *
- * @param {SubmitEvent} event
- */
 async function handleFormSubmit(event, method) {
 	event.preventDefault();
 
@@ -36,12 +29,40 @@ async function handleFormSubmit(event, method) {
 
 	try {
 		const formData = new FormData(form);
-		const responseData = await postFormDataAsJson(method, url, formData);
+		const responseData = await submitFormDataAsJson(method, url, formData);
 	} catch (error) {
 		console.error(error);
-		showBanner(`Error. <code>${error.message}</code>`, 'danger');
-		return false;
+		return error;
 	}
 
 	return true;
+}
+
+async function restfulDelete(url) {
+	const fetchOptions = {
+		method: "DELETE",
+	};
+
+	const response = await fetch(url, fetchOptions);
+
+	if (!response.ok) {
+		const errorMessage = await response.text();
+		console.error(errorMessage);
+		showBanner(`Error. <code>${errorMessage}</code>`, 'danger');
+		return;
+	}
+
+	showBanner(`Success. ${url} was deleted.`, 'success');
+}
+
+function setupCreateForm(form, callback) {
+	form.addEventListener("submit", (event) => {
+		callback(handleFormSubmit(event, "POST"));
+	});
+}
+
+function setupUpdateForm(form, callback) {
+	form.addEventListener("submit", (event) => {
+		callback(handleFormSubmit(event, "PATCH"));
+	});
 }
